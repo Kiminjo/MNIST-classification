@@ -5,6 +5,7 @@ from model import LeNet5, regularized_LeNet5, CustomMLP
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 import matplotlib.pyplot as plt
+import time
 
 
 
@@ -103,7 +104,7 @@ def main():
 
     # ========== 1. data load ==========
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize([0.1307], [0.3081])])
-    mnist_dataset = dataset.MNIST(data_dir = '../data/train.tar', transform=transform)
+    mnist_dataset = dataset.MNIST(data_dir = 'data/train.tar', transform=transform)
     train_dataset, test_dataset = random_split(mnist_dataset, [50000, 10000])
 
     train_data = DataLoader(train_dataset, batch_size=64)
@@ -120,6 +121,7 @@ def main():
     
     
     print('Lenet 5 training start ')
+    lenet_time = time.time()
     lenet_trn_loss, lenet_trn_acc, lenet_tst_loss, lenet_tst_acc = [],[],[],[]
     for epoch in range(training_epochs) :
         lenet_train_loss, lenet_train_acc = train(model=lenet_model, trn_loader=train_data, device=device, criterion=lenet_cost_function, 
@@ -131,6 +133,8 @@ def main():
         
         print('epochs {} training loss {}  training accuracy {} validation loss {}  validation accuracy {}'.format(epoch, lenet_train_loss, lenet_train_acc, 
                                                                                                                    lenet_test_loss, lenet_test_acc))
+        if epoch+1 == 10 :
+            print('lenet execution time : {}'.format(time.time() - lenet_time))
         
     # ========== 3. Regularized Lenet 5 model ==========
     regularized_lenet_model = regularized_LeNet5().to(device)
@@ -138,6 +142,7 @@ def main():
     regularized_lenet_cost_function = torch.nn.CrossEntropyLoss().to(device)
     
     print('Regularized Lenet 5 training start ')
+    r_lenet_time = time.time()
     r_lenet_trn_loss, r_lenet_trn_acc, r_lenet_tst_loss, r_lenet_tst_acc = [],[],[],[]
     for epoch in range(training_epochs) :
         regularized_lenet_train_loss, regularized_lenet_train_acc = train(model=regularized_lenet_model, trn_loader=train_data, device=device, 
@@ -150,6 +155,9 @@ def main():
         
         print('epochs {} training loss {}  training accuracy {} validation loss {}  validation accuracy {}'.format(epoch, regularized_lenet_train_loss, regularized_lenet_train_acc, 
                                                                                                                    regularized_lenet_test_loss, regularized_lenet_test_acc))
+        
+        if epoch+1 == 10 :
+            print('regularized execution time : {}'.format(time.time() - r_lenet_time))
     
     
     # ========== 4. Custom model Load ==========
@@ -158,6 +166,7 @@ def main():
     custom_cost_function = torch.nn.CrossEntropyLoss().to(device)
     
     print('Custom model training start')
+    custom_time = time.time()
     custom_trn_loss, custom_trn_acc, custom_tst_loss, custom_tst_acc = [],[],[],[]
     for epoch in range(training_epochs) :
         custom_train_loss, custom_train_acc = train(model=custom_model, trn_loader=train_data, device=device, criterion=custom_cost_function, optimizer=custom_optimizer)
@@ -168,6 +177,9 @@ def main():
         
         print('epochs {} training loss {}  training accuracy {} validation loss {}  validation accuracy {}'.format(epoch, custom_train_loss, custom_train_acc, 
                                                                                                                    custom_test_loss, custom_test_acc))
+        
+        if epoch+1 == 10 :
+            print('custom model execution time : {}'.format(time.time() - custom_time))
     
     
     
@@ -187,7 +199,7 @@ def main():
 #------------------------------draw cost function-------------------------------------------------------
 # input : list of each loss and accuracy
 def draw_plot(trn_loss, trn_acc, val_loss, val_acc) :
-    fig, axes = plt.subplots(nrows=2, ncols=2)
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(16,10))
     
     # draw train loss graph 
     axes[0, 0].plot(trn_loss[0], label='lanet'); axes[0, 0].plot(trn_loss[1], label='regularized lanet'); axes[0, 0].plot(trn_loss[2], label='custom')
@@ -208,6 +220,8 @@ def draw_plot(trn_loss, trn_acc, val_loss, val_acc) :
     axes[1, 1].plot(val_acc[0], label='lanet'); axes[1, 1].plot(val_acc[1], label='regularized lanet'); axes[1, 1].plot(val_acc[2], label='custom')
     axes[1, 1].set_title('validation accuracy function')
     axes[1, 1].legend()
+    
+    plt.savefig('output_1.png')
     
     
     
