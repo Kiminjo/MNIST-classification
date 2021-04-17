@@ -70,6 +70,7 @@ def test(model, tst_loader, device, criterion):
     for batch_idx, batch in enumerate(tst_loader) :
         with torch.no_grad() : 
             imgs, labels = batch
+            imgs, labels = imgs.to(device), labels.to(device)
             output = model(imgs)
             cost = criterion(output, labels)
             
