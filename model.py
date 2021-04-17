@@ -179,6 +179,9 @@ class CustomMLP(nn.Module):
             nn.Softmax(dim=1)
             )
         
+       # number of parameters for forward = 3,000 + 720 + 8,100 + 1,800 + 36,000 + 10,080 + 840 = 60,540
+       # total parameters = 60,540 * 2(backpropagation) = 121,080
+        
 
     def forward(self, img):
         out = self.layer1(img)
