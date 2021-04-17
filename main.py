@@ -6,6 +6,9 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 import matplotlib.pyplot as plt
 
+
+
+#-------------------------train function------------------------------------------------------
 def train(model, trn_loader, device, criterion, optimizer):
     """ Train function
 
@@ -46,6 +49,7 @@ def train(model, trn_loader, device, criterion, optimizer):
 
     return trn_loss, acc
 
+#-------------------------validation function-----------------------------------------------------
 def test(model, tst_loader, device, criterion):
     """
     Test function
@@ -83,6 +87,7 @@ def test(model, tst_loader, device, criterion):
     return tst_loss, acc
 
 
+#------------------------------main function-------------------------------------------------------
 def main():
     """ Main function
 
@@ -95,7 +100,7 @@ def main():
 
     """
 
-    # 1. data load
+    # ========== 1. data load ==========
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize([0.1307], [0.3081])])
     mnist_dataset = dataset.MNIST(data_dir = '../data/train.tar', transform=transform)
     train_dataset, test_dataset = random_split(mnist_dataset, [50000, 10000])
@@ -104,7 +109,7 @@ def main():
     test_data = DataLoader(test_dataset, batch_size=64)
 
     
-    # 2. Lenet 5 model
+    # ========== 2. Lenet 5 model ==========
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     training_epochs = 10
     
@@ -126,7 +131,7 @@ def main():
         print('epochs {} training loss {}  training accuracy {} validation loss {}  validation accuracy {}'.format(epoch, lenet_train_loss, lenet_train_acc, 
                                                                                                                    lenet_test_loss, lenet_test_acc))
         
-    # 3. Regularized Lenet 5 model
+    # ========== 3. Regularized Lenet 5 model ==========
     regularized_lenet_model = regularized_LeNet5().to(device)
     regularized_lenet_optimizer = torch.optim.SGD(regularized_lenet_model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.001)
     regularized_lenet_cost_function = torch.nn.CrossEntropyLoss().to(device)
@@ -146,7 +151,7 @@ def main():
                                                                                                                    regularized_lenet_test_loss, regularized_lenet_test_acc))
     
     
-    # 4. Custom model Load
+    # ========== 4. Custom model Load ==========
     custom_model = CustomMLP().to(device)
     custom_optimizer = torch.optim.SGD(custom_model.parameters(), lr=0.01, momentum=0.9)
     custom_cost_function = torch.nn.CrossEntropyLoss().to(device)
@@ -163,18 +168,22 @@ def main():
         print('epochs {} training loss {}  training accuracy {} validation loss {}  validation accuracy {}'.format(epoch, custom_train_loss, custom_train_acc, 
                                                                                                                    custom_test_loss, custom_test_acc))
     
-    # make loss and acc list for visualization
+    
+    
+    # ========== 5. visualization ==========
+    #  make loss and acc list for visualization
     trn_loss = [lenet_trn_loss, r_lenet_trn_loss, custom_trn_loss]
     trn_acc = [lenet_trn_acc, r_lenet_trn_acc, custom_trn_acc]
     tst_loss = [lenet_tst_loss, r_lenet_tst_loss, custom_tst_loss]
     tst_acc = [lenet_tst_acc, r_lenet_tst_acc, custom_tst_acc]
     
-    # 5. visualization
+    # draw plot
     draw_plot(trn_loss, trn_acc, tst_loss, tst_acc)
 
 
 
 
+#------------------------------draw cost function-------------------------------------------------------
 # input : list of each loss and accuracy
 def draw_plot(trn_loss, trn_acc, val_loss, val_acc) :
     fig, axes = plt.subplots(nrows=2, ncols=2)

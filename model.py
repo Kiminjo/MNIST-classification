@@ -1,6 +1,7 @@
 
 import torch.nn as nn
 
+#------------------------------Lenet 5-------------------------------------------------------
 class LeNet5(nn.Module):
     """ LeNet-5 (LeCun et al., 1998)
 
@@ -64,7 +65,9 @@ class LeNet5(nn.Module):
         return output
     
     
-    
+#------------------------------Regularized Lenet 5-------------------------------------------------------
+# add dropout in FCN 
+# add weight decay in cost function 
 class regularized_LeNet5(nn.Module):
     """ LeNet-5 (LeCun et al., 1998)
 
@@ -130,6 +133,9 @@ class regularized_LeNet5(nn.Module):
         return output
 
 
+#------------------------------custom model-------------------------------------------------------
+# Use 120 and 150 filters on each convolutional layer
+# Add 1x1 filter layer immediately after each layer to reduce to small dimensions
 
 class CustomMLP(nn.Module):
     """""
@@ -172,6 +178,7 @@ class CustomMLP(nn.Module):
             nn.Linear(84, 10), # number of parameter = 84*10 = 840
             nn.Softmax(dim=1)
             )
+        
 
     def forward(self, img):
         out = self.layer1(img)
