@@ -104,8 +104,8 @@ def main():
 
     # ========== 1. data load ==========
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize([0.1307], [0.3081])])
-    mnist_dataset = dataset.MNIST(data_dir = 'data/train.tar', transform=transform)
-    train_dataset, test_dataset = random_split(mnist_dataset, [50000, 10000])
+    train_dataset = dataset.MNIST(data_dir = 'data/train.tar', transform=transform)
+    test_dataset = dataset.MNIST(data_dir = 'data/test.tar', transform=transform)
 
     train_data = DataLoader(train_dataset, batch_size=64)
     test_data = DataLoader(test_dataset, batch_size=64)
