@@ -150,24 +150,24 @@ class CustomMLP(nn.Module):
         
         self.layer1 = nn.Sequential(
             nn.Conv2d(1, 120, kernel_size=5, stride=1, padding=0, bias=True), # number of parameters = 5*5*120 =  3,000
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
+            nn.ReLU()
             )
         
         self.inception1 = nn.Sequential(
             nn.Conv2d(120, 6, kernel_size=1, stride=1, padding=0, bias=False), # number of parameters = 1*1*120*6 = 720
-            nn.ReLU()
-            )
-        
-        self.layer2 = nn.Sequential(
-            nn.Conv2d(6, 150, kernel_size=3, stride=1, padding=0, bias=True), # number of paramters = 3*3*6*150 = 8,100
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2)
             )
         
+        self.layer2 = nn.Sequential(
+            nn.Conv2d(6, 150, kernel_size=3, stride=1, padding=0, bias=True), # number of paramters = 3*3*6*150 = 8,100
+            nn.ReLU()
+            )
+        
         self.inception2 = nn.Sequential(
             nn.Conv2d(150, 12, kernel_size=1, stride=1, bias=False), # number of parameters = 1*1*150*12 = 1,800 
-            nn.ReLU()
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2)
             )
         
         self.fcn = nn.Sequential(
@@ -192,3 +192,4 @@ class CustomMLP(nn.Module):
         output = self.fcn(out)
 
         return output
+    

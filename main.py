@@ -180,8 +180,7 @@ def main():
         
         if epoch+1 == 10 :
             print('custom model execution time : {}'.format(time.time() - custom_time))
-    
-    
+            
     
     # ========== 5. visualization ==========
     #  make loss and acc list for visualization
@@ -192,7 +191,6 @@ def main():
     
     # draw plot
     draw_plot(trn_loss, trn_acc, tst_loss, tst_acc)
-
 
 
 
