@@ -86,7 +86,7 @@ def visualization_mnist_data(data) :
 #%%
 if __name__ == '__main__':
     
-    dataset = MNIST(data_dir = '../data/train.tar', transform=transform)
+    dataset = MNIST(data_dir = 'data/train.tar', transform=transform)
     train_dataset, val_dataset, test_dataset = random_split(dataset, [40000, 10000, 10000])
 
     train_data = DataLoader(train_dataset, batch_size=64)
