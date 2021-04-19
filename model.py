@@ -111,11 +111,11 @@ class regularized_LeNet5(nn.Module):
         
         self.fcn = nn.Sequential(
             nn.Linear(in_features=16*5*5, out_features=120), # number of parameter = 16*5*5*120 = 48,000
-            nn.ReLU(),
             nn.Dropout(p=0.3),
+            nn.ReLU(),
             nn.Linear(in_features=120, out_features=84), # number of parameter = 120 * 84 = 10,080
-            nn.ReLU(),
             nn.Dropout(p=0.3),
+            nn.ReLU(),
             nn.Linear(in_features=84, out_features=10), # number of parameter = 84*10 = 840
             nn.Softmax(dim=1)
             )
@@ -149,47 +149,46 @@ class CustomMLP(nn.Module):
         super().__init__()
         
         self.layer1 = nn.Sequential(
-            nn.Conv2d(1, 120, kernel_size=5, stride=1, padding=0, bias=True), # number of parameters = 5*5*120 =  3,000
+            nn.Linear(28*28, 70), # number of parameters = 28*28*70 = 54,880 
+            nn.Dropout(p=0.5),
             nn.ReLU()
-            )
-        
-        self.inception1 = nn.Sequential(
-            nn.Conv2d(120, 6, kernel_size=1, stride=1, padding=0, bias=False), # number of parameters = 1*1*120*6 = 720
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
             )
         
         self.layer2 = nn.Sequential(
-            nn.Conv2d(6, 150, kernel_size=3, stride=1, padding=0, bias=True), # number of paramters = 3*3*6*150 = 8,100
+            nn.Linear(70, 64), # number of parameters = 70*64 = 4,480
+            nn.Dropout(p=0.5),
             nn.ReLU()
             )
         
-        self.inception2 = nn.Sequential(
-            nn.Conv2d(150, 12, kernel_size=1, stride=1, bias=False), # number of parameters = 1*1*150*12 = 1,800 
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
+        self.layer3 = nn.Sequential(
+            nn.Linear(64, 24), # number of paramters = 64*24 = 1,536
+            nn.Dropout(p=0.5),
+            nn.ReLU()
             )
         
-        self.fcn = nn.Sequential(
-            nn.Linear(in_features=12*5*5, out_features=120), # number of parameters = 36,000
-            nn.ReLU(),
-            nn.Linear(120, 84), # number of parameter = 120 * 84 = 10,080
-            nn.ReLU(),
-            nn.Linear(84, 10), # number of parameter = 84*10 = 840
+        self.layer4 = nn.Sequential(
+            nn.Linear(24, 16), # number of parameters = 24*16 = 384
+            nn.Dropout(p=0.5),
+            nn.ReLU()
+            )
+        
+        self.layer5 = nn.Sequential(
+            nn.Linear(16, 10), # number of parameters = 16*10 = 160
             nn.Softmax(dim=1)
             )
         
-       # number of parameters for forward = 3,000 + 720 + 8,100 + 1,800 + 36,000 + 10,080 + 840 = 60,540
-       # total parameters = 60,540 * 2(backpropagation) = 121,080
+       # number of parameters for forward = 54,880 + 4,480 + 1,536 + 384 + 160 = 61,440
+       # total parameters = 61,440 * 2(backpropagation) = 122,880
         
 
     def forward(self, img):
+        img = img.view(-1, 28*28)
         out = self.layer1(img)
-        out = self.inception1(out)
         out = self.layer2(out)
-        out = self.inception2(out)
-        out = out.view(-1, 12*5*5)
-        output = self.fcn(out)
+        out = self.layer3(out)
+        out = self.layer4(out)
+        output = self.layer5(out)
+
 
         return output
     

@@ -2,7 +2,7 @@
 import torch
 import dataset
 from model import LeNet5, regularized_LeNet5, CustomMLP
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 from torchvision import transforms
 import matplotlib.pyplot as plt
 import time
@@ -114,7 +114,7 @@ def main():
     # ========== 2. Lenet 5 model ==========
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     training_epochs = 10
-    
+
     lenet_model = LeNet5().to(device)
     lenet_optimizer = torch.optim.SGD(lenet_model.parameters(), lr=0.01, momentum=0.9)
     lenet_cost_function = torch.nn.CrossEntropyLoss().to(device)
@@ -159,7 +159,7 @@ def main():
         if epoch+1 == 10 :
             print('regularized execution time : {}'.format(time.time() - r_lenet_time))
     
-    
+
     # ========== 4. Custom model Load ==========
     custom_model = CustomMLP().to(device)
     custom_optimizer = torch.optim.SGD(custom_model.parameters(), lr=0.01, momentum=0.9)
@@ -219,7 +219,7 @@ def draw_plot(trn_loss, trn_acc, val_loss, val_acc) :
     axes[1, 1].set_title('validation accuracy function')
     axes[1, 1].legend()
     
-    plt.savefig('output_1.png')
+    plt.savefig('output_2.png')
     
     
     
