@@ -1,14 +1,42 @@
-# MNIST_for_class
-## Artificial neural network and deep learning class task
+# MNIST image classification
 
-* Requirements     
+This project classifies MNIST data that is widely used in computer vision. A basic CNN model was used as the usage model. This project was developed as part of the "Artificial Neural Networks and Deep Learning" class in the Spring Semester of Data Science at Seoul National University of Science and Technology in 2021.
 
-1. (20pts) You should write your own pipeline to provide data to your model. Write your code in the template `dataset.py`. Please read the comments carefully and follow those instructions.  
-2. (20pts) (Report) Implement LeNet-5 and your custom MLP models in `model.py`. Some instructions are given in the file as comments. Note that your custom MLP model should have about the same number of model parameters with LeNet-5. Describe the number of model parameters of LeNet-5 and your custom MLP and how to compute them in your report.  
-3. (20pts) Write `main.py` to train your models, LeNet-5 and custom MLP. Here, you should monitor the training process. To do so, you need some statistics such as average loss values and accuracy at the end of each epoch.  
-4. (10pts) (Report) Plot above statistics, average loss value and accuracy, for training and testing. It is fine to use the test dataset as a validation dataset. Therefore, you will have four plots for each model: loss and accuracy curves for training and test datasets, respectively.  
-5. (10pts) (Report) Compare the predictive performances of LeNet-5 and your custom MLP. Also, make sure that the accuracy of LeNet-5 (your implementation) is similar to the known accuracy.   
-6. (20pts) (Report) Employ at least more than two regularization techniques to improve LeNet-5 model. You can use whatever techniques if you think they may be helpful to improve the performance. Verify that they actually help improve the performance. Keep in mind that when you employ the data augmentation technique, it should be applied only to training data. So, the modification of provided `MNIST` class in `dataset.py` may be needed.  
+<br></br>
 
-* Due date : 2021.04.20. Tue
-* Submission : dataset.py, model.py, main.py files + **written report**
+## Image classification using CNN 
+
+MNIST data is widely used in computer vision tasks, especially classification. Also CNN is the main deep learning algorithm for image processing. Although the recent transformer and its derivative models show good performance in image processing, but the CNN model is still widely used in image processing. In the experiment, two lenet5 models under different conditions and an MLP model for performance comparison were used.
+
+This project focuses on using CNN as part of the class and evaluating the performance by changing the parameters of the model. The changed parameters will be described later.
+
+Check out the report on the results of this project [here](https://github.com/Kiminjo/data-mining-lecture/files/7465442/mnist.report.pdf)
+
+<br>
+
+### Parameters changed in the experiment
+- `Regulazer` : Of the two lenet5 models, one is normal and one has a regulator. As a regulator, a dropout layer was added in the FCN and a weight decay term was added in the optimizer.
+- `MLP model` : For the evaluation of CNN performance, the FCN model was used as a control set. At this time, for accurate evaluation, the model was designed so that the parameters used were similar to the CNN.
+
+<br></br>
+
+## Dataset
+
+MNIST is so famous in computer vision field. So, we will minimize the description of the dataset here. However, if you are not familiar with MNIST data yet, please refer [here](https://velog.io/@tmddn0311/mnist-classification).
+
+<br></br>
+
+## Software Requirements
+
+- python >= 3.5
+- pytorch 
+- numpy
+- matplotlib
+
+<br></br>
+
+## Key Files
+
+- `dataset.py` : Convert the image data into a batch of tensor. Here, since it is black and white data, it takes on a one-dimensional form.
+- `model.py` : The model used for image classification was implemented. This model includes three models. These are `lenet5`, `regularized lenet5`, and `custom MLP models`.
+- `main.py` : Main file of this project. It train and classify image using models in model.py. Also performance graph (error rate) were visualized using matplotlib.
