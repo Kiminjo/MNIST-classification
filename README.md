@@ -22,7 +22,8 @@ Check out the report on the results of this project [here](https://github.com/Ki
 
 ## Dataset
 
-MNIST is so famous in computer vision field. So, we will minimize the description of the dataset here. However, if you are not familiar with MNIST data yet, please refer [here](https://velog.io/@tmddn0311/mnist-classification).
+MNIST is so famous in computer vision field. So, we will minimize the description of the dataset here. 
+However, if you are not familiar with MNIST data yet, please refer [here](https://velog.io/@tmddn0311/mnist-classification).
 
 <br></br>
 
